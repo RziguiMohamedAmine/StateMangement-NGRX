@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { StudentsRecords } from '../state/students-records';
 import { MatInputModule } from '@angular/material/input';
 import { AppState, selectAll } from '../state/state-selectors';
+import * as Actions from "../state/students-records.action";
 
 
 @Component({
@@ -24,12 +25,13 @@ export class StudentsListComponent implements OnInit {
   dataSource$ !: Observable<StudentsRecords[]> ;
   displayedColumns: string[] = ['name', 'city', 'country', 'subject', 'passportDeclaration','phone'];
   constructor(private store: Store<AppState>){
+    this.store.dispatch(Actions.callStudentsRecordsApi());
   }
 
   ngOnInit(): void {
     this.dataSource$ = this.store.select(selectAll);
     this.dataSource$.subscribe((res: any) => {
-      this.dataSource = res;
+      this.dataSource = res?.studentsRecords;
     });
   }
 

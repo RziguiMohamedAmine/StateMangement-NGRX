@@ -1,8 +1,10 @@
-import { createReducer } from "@ngrx/store";
+import { createReducer, on } from "@ngrx/store";
 import { StudentsRecords } from "./students-records";
+import * as Actions from "../state/students-records.action";
 
-export const initState: ReadonlyArray<StudentsRecords> =[{
+export const initState:{studentsRecords: StudentsRecords[]}  ={
   
+       studentsRecords:[{
         name: "Ali",
         city: "test",
         country: "Tunisia",
@@ -16,11 +18,17 @@ export const initState: ReadonlyArray<StudentsRecords> =[{
         email: "amine@gmail.com",
         phone: "56565656",
         postalCode: 123456
+       }]
     
-}];
+};
 
 export const StudentReducer = createReducer(
-    initState
+    initState,
+    on(Actions.callStudentsRecordsApiSuccess, 
+        (state: any, { payload }: any) => ({
+           ...state,studentsRecords: payload
+        })
+    )
 );
 
 

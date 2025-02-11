@@ -6,14 +6,20 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { provideState, provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { StudentReducer } from './state/students.reducer';
+import { provideEffects } from '@ngrx/effects';
+import { StudentsRecordsEffects } from './state/students-records.effects';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes), 
-  provideClientHydration(), 
-  provideStore(),
-  provideState({
-    name: 'students',
-    reducer:StudentReducer
-  }),
-  provideStoreDevtools({ maxAge: 25, logOnly: false })] //initiate the dev tools (for debugging)
+  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes),
+    provideHttpClient(withFetch()),
+    provideClientHydration(),
+    provideEffects([StudentsRecordsEffects]),
+    provideStore(),
+    provideState({
+        name: 'Students',
+        reducer: StudentReducer
+    }),
+    provideStoreDevtools({ maxAge: 25, logOnly: false }), provideEffects()] //initiate the dev tools (for debugging)
+ //initiate the dev tools (for debugging)
 };
